@@ -26,8 +26,8 @@ model Order{
   date String
   note String
   
-  customer User @relation(fields: [ownerId], references: [id])
-  ownerId Int
+  customer User @relation(fields: [customerId], references: [id])
+  customerId Int
 
   items Product[]
 }
