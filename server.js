@@ -7,6 +7,11 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.originalURL}`);
 });
 
+app.use(require("./api/auth").router);
+app.use("/orders", require("./api/orders"));
+app.use("/products", require("./api/products"));
+app.use("/users", require("./api/users"));
+
 app.use((req, res, next) => {
   next({ status: 404, message: `Endpoint not Found, Magellan` });
 });
