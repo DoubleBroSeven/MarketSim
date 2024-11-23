@@ -3,12 +3,10 @@ const express = require("express");
 app = express();
 PORT = 3000;
 
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.originalURL}`);
-});
+app.use(require("morgan")("dev"));
 app.use(express.json());
 
-// app.use(require("./api/auth").router);
+app.use(require("./api/auth").router);
 // app.use("/orders", require("./api/orders"));
 // app.use("/products", require("./api/products"));
 // app.use("/users", require("./api/users"));
