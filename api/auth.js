@@ -3,10 +3,9 @@ const router = express.Router();
 
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
-
-const createToken = (id) => {
+function createToken(id) {
   return jwt.sign({ id }, JWT_SECRET, { expiresIn: "1d" });
-};
+}
 
 const prisma = require("../prisma");
 
@@ -16,7 +15,7 @@ router.use(async (req, res, next) => {
   if (!token) return next();
 
   try {
-    const { id } = await jwt.verify(token, JWT_SECRET);
+    const { id } = jwt.verify(token, JWT_SECRET);
     const user = await prisma.user.findUniqueOrThrow({
       where: { id },
     });
@@ -32,30 +31,30 @@ router.post("/register", async (req, res, next) => {
   try {
     const user = await prisma.user.register(username, password);
     const token = createToken(user.id);
-    res.status(201).json({ token });
+    res.status(201).send({ token });
   } catch (e) {
     next(e);
   }
 });
 
-router.use("/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const user = await prisma.user.login(username, password);
     const token = createToken(user.id);
-    res.json({ token });
+    res.send({ token });
   } catch (e) {
     next(e);
   }
 });
 
-const authenticate = () => {
+function authenticate(req, res, next) {
   if (req.user) {
     next();
   } else {
     next({ status: 401, message: `You must be logged in` });
   }
-};
+}
 
 module.exports = {
   router,

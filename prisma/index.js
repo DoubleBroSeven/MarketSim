@@ -14,12 +14,12 @@ const prisma = new PrismaClient().$extends({
         return user;
       },
       async login(username, password) {
-        const customer = await prisma.user.findUniqueOrThrow({
+        const user = await prisma.user.findUniqueOrThrow({
           where: { username },
         });
-        const valid = await bcrypt.compare(password, customer.password);
+        const valid = await bcrypt.compare(password, user.password);
         if (!valid) throw Error(`Woah back up, BUddy.`);
-        return customer;
+        return user;
       },
     },
   },
