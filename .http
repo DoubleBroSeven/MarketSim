@@ -18,3 +18,9 @@ Content-Type: application/json
   "username": "Mtorma",
   "password": "securepass"
 }
+
+###GET array of products
+GET {{host}}/products
+
+###get Product by Id
+GET {{host}}/products/4
